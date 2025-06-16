@@ -118,5 +118,7 @@ public class PracticeFormTEST {
 
         Assert.assertEquals(tableDescriptionList.get(3).getText(), "Mobile", "Mobile text is not displayed right in the table");
         Assert.assertEquals(tableValueList.get(3).getText(), phoneValue, "Mobile is not displayed right in the table");
+
+        driver.quit();
     }
 }
