@@ -8,23 +8,15 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import sharedData.SharedData;
 
 import java.sql.Driver;
 import java.util.List;
 
-public class WebTablesTEST {
-    public WebDriver driver;
+public class WebTablesTEST extends SharedData {
 
     @Test
     public void testMethod(){
-        //deschidem o instanta de Chrome
-        driver=new EdgeDriver();
-
-        //accesam o pagina specifica
-        driver.get("https://demoqa.com/");
-
-        //facem browser ul maximize
-        driver.manage().window().maximize();
 
         JavascriptExecutor executor = (JavascriptExecutor) driver;
 

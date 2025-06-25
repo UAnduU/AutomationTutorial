@@ -1,59 +1,47 @@
 package tests;
 
+import helperMethods.AlertHelper;
+import helperMethods.ElementHelper;
 import org.openqa.selenium.*;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
+import sharedData.SharedData;
 
 import java.time.Duration;
 
-public class AlertsTEST {
-
-    public WebDriver driver;
+public class AlertsTEST extends SharedData {
 
     @Test
 
     public void testMethod() {
 
-        driver = new EdgeDriver();
-        driver.get("https://demoqa.com");
-        driver.manage().window().maximize();
-
-        //wait implicit
-//        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-
-        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        ElementHelper elementHelper = new ElementHelper(driver);
+        AlertHelper alertHelper = new AlertHelper(driver);
 
         WebElement menuElement = driver.findElement(By.xpath("//h5[text()='Alerts, Frame & Windows']"));
-        executor.executeScript("arguments[0].click();", menuElement);
+        elementHelper.clickJSElement(menuElement);
 
         WebElement alertsElement = driver.findElement(By.xpath("//span[text()='Alerts']"));
-        executor.executeScript("arguments[0].click();", alertsElement);
+        elementHelper.clickJSElement(alertsElement);
 
         WebElement clickButton1 = driver.findElement(By.id("alertButton"));
-        clickButton1.click();
-        Alert alertOk=driver.switchTo().alert();
-        alertOk.accept();
+        elementHelper.clickElement(clickButton1);
+        alertHelper.acceptAlert();
 
         WebElement clickButton2 = driver.findElement(By.id("timerAlertButton"));
-        clickButton2.click();
+        elementHelper.clickElement(clickButton2);
         //wait explicit pentru alerta
-        WebDriverWait wait=new WebDriverWait(driver,Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.alertIsPresent());
-        Alert alertWait=driver.switchTo().alert();
-        alertWait.accept();
+        alertHelper.acceptAlert();
 
         WebElement clickButton3 = driver.findElement(By.id("confirmButton"));
-        clickButton3.click();
-        Alert alertCancel=driver.switchTo().alert();
-        alertCancel.dismiss();
+        elementHelper.clickElement(clickButton3);
+        alertHelper.dismissAlert();
 
         WebElement clickButton4 = driver.findElement(By.id("promtButton"));
-        clickButton4.click();
-        Alert alertPrompt=driver.switchTo().alert();
-        alertPrompt.sendKeys("Test field");
-        alertPrompt.accept();
+        elementHelper.clickElement(clickButton4);
+        alertHelper.fillAlert("Text");
 
 
     }

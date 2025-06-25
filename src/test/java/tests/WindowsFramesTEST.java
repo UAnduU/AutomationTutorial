@@ -6,21 +6,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.annotations.Test;
+import sharedData.SharedData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WindowsFramesTEST {
+public class WindowsFramesTEST extends SharedData {
 
     public WebDriver driver;
 
     @Test
 
     public void testMethod(){
-
-        driver = new EdgeDriver();
-        driver.get("https://demoqa.com");
-        driver.manage().window().maximize();
 
         JavascriptExecutor executor = (JavascriptExecutor) driver;
 
