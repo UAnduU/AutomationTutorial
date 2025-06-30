@@ -1,9 +1,6 @@
 package helperMethods;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 public class ElementHelper {
     public WebDriver driver;
@@ -19,6 +16,10 @@ public class ElementHelper {
 
     public void clickElement(WebElement element){
         element.click();
+    }
+
+    public void pressElement(WebElement element, Keys value){
+        element.sendKeys(value);
     }
 
 }

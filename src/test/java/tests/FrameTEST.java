@@ -1,5 +1,6 @@
 package tests;
 
+import helperMethods.ElementHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -14,13 +15,13 @@ public class FrameTEST extends SharedData {
 
     public void testMethod() {
 
-        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        ElementHelper elementHelper=new ElementHelper(driver);
 
         WebElement menuElement = driver.findElement(By.xpath("//h5[text()='Alerts, Frame & Windows']"));
-        executor.executeScript("arguments[0].click();", menuElement);
+        elementHelper.clickJSElement(menuElement);
 
         WebElement framesElement = driver.findElement(By.xpath("//span[text()='Frames']"));
-        executor.executeScript("arguments[0].click();", framesElement);
+        elementHelper.clickJSElement(framesElement);
 
         driver.switchTo().frame("frame1");
         WebElement firstBlockElement = driver.findElement(By.id("sampleHeading"));

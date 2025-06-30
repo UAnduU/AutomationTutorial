@@ -1,102 +1,102 @@
 package tests;
 
+import helperMethods.ElementHelper;
+import helperMethods.PracticeFormHelper;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import sharedData.SharedData;
 
 import java.io.File;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-public class PracticeFormTEST {
-    public WebDriver driver;
+public class PracticeFormTEST extends SharedData {
 
     @Test
     public void testMethod() {
-        driver = new EdgeDriver();
-        driver.get("https://demoqa.com");
-        driver.manage().window().maximize();
 
-        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        ElementHelper elementHelper=new ElementHelper(driver);
+        PracticeFormHelper practiceFormHelper=new PracticeFormHelper(driver);
 
         WebElement menuElement=driver.findElement(By.xpath("//h5[text()='Forms']"));
-        executor.executeScript("arguments[0].click();", menuElement);
+        elementHelper.clickJSElement(menuElement);
 
         WebElement submenuElement=driver.findElement(By.xpath("//span[text()='Practice Form']"));
-        executor.executeScript("arguments[0].click();", submenuElement);
+        elementHelper.clickJSElement(submenuElement);
 
         //Wait implicit
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         WebElement firstnameElement = driver.findElement(By.cssSelector("input[placeholder ='First Name'"));
-        String firstnameValue = "John";
-        firstnameElement.sendKeys(firstnameValue);
+        String firstnameValue="John";
+        practiceFormHelper.fillPForm(firstnameElement,"John");
 
         WebElement lastnameElement = driver.findElement(By.cssSelector("input[placeholder ='Last Name'"));
-        String lastnameValue = "Doe";
-        lastnameElement.sendKeys(lastnameValue);
+        String lastnameValue="Doe";
+        practiceFormHelper.fillPForm(lastnameElement,"Doe");
 
         WebElement emailElement = driver.findElement(By.cssSelector("input[placeholder ='name@example.com'"));
-        String emailValue = "johndoe@email.com";
-        emailElement.sendKeys(emailValue);
+        String emailValue="johndoe@email.com";
+        practiceFormHelper.fillPForm(emailElement,"johndoe@email.com");
 
         WebElement phoneElement = driver.findElement(By.cssSelector("input[placeholder ='Mobile Number'"));
-        String phoneValue = "0721523885";
-        phoneElement.sendKeys(phoneValue);
+        String phoneValue="07231513412";
+        practiceFormHelper.fillPForm(phoneElement,"07231513412");;
 
         WebElement subjectsElement = driver.findElement(By.id("subjectsInput"));
         List<String> subjectsValue = Arrays.asList("Arts", "Accounting", "Maths");
         for (int index = 0; index < subjectsValue.size(); index++) {
             subjectsElement.sendKeys(subjectsValue.get(index));
-            subjectsElement.sendKeys(Keys.ENTER);
-
+            elementHelper.pressElement(subjectsElement,Keys.ENTER);
         }
 
-        String genderValue = "Male";
+        String genderValue = "Other";
         List<WebElement> genderElementList = driver.findElements(By.cssSelector("div[id='genterWrapper']>div>div>label[class='custom-control-label']"));
         switch (genderValue) {
             case "Male":
-                genderElementList.get(0).click();
+                elementHelper.clickElement(genderElementList.get(0));
                 break;
             case "Female":
-                genderElementList.get(1).click();
+                elementHelper.clickElement(genderElementList.get(1));
                 break;
-            case "Other ":
-                genderElementList.get(0).click();
+            case "Other":
+                elementHelper.clickElement(genderElementList.get(2));
                 break;
         }
 
         List<WebElement> hobbiesElementList = driver.findElements(By.cssSelector("div[id='hobbiesWrapper']>div>div>label[class='custom-control-label']"));
-        for (int index = 0; index < hobbiesElementList.size(); index++) {
-            hobbiesElementList.get(index).click();
+        List<String> hobbiesValues = Arrays.asList("Music", "Sports");
+        for(int index = 0; index<hobbiesElementList.size();index++){
+            if(hobbiesValues.contains(hobbiesElementList.get(index).getText())){
+                elementHelper.clickElement(hobbiesElementList.get(index));
+            }
         }
 
         WebElement uploadElement = driver.findElement(By.id("uploadPicture"));
         String uploadValue = "src/test/resources/Screenshot 2024-01-13 155908.png";
         File file = new File(uploadValue);
-        uploadElement.sendKeys(file.getAbsolutePath());
+        practiceFormHelper.fillPForm(uploadElement, file.getAbsolutePath());
 
         WebElement currentAddress = driver.findElement(By.id("currentAddress"));
-        String currentAddressValue = "Street, Number 1234, Current";
-        currentAddress.sendKeys(currentAddressValue);
+        practiceFormHelper.fillPForm(currentAddress,"Street, No, Apt");
 
         WebElement stateElement = driver.findElement(By.id("react-select-3-input"));
-        String stateValue = "NCR";
-        stateElement.sendKeys(stateValue);
-        stateElement.sendKeys(Keys.ENTER);
+        practiceFormHelper.fillPForm(stateElement,"NY");
+        elementHelper.pressElement(stateElement,Keys.ENTER);
 
         WebElement cityElement = driver.findElement(By.id("react-select-4-input"));
-        String cityValue = "D";
-        cityElement.sendKeys(cityValue);
-        cityElement.sendKeys(Keys.ENTER);
+        practiceFormHelper.fillPForm(cityElement,"City");
+        elementHelper.pressElement(cityElement,Keys.ENTER);
 
         WebElement submitElement = driver.findElement(By.id("submit"));
-        submitElement.click();
+        elementHelper.clickElement(submitElement);
 
         //Wait explicit
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -118,7 +118,5 @@ public class PracticeFormTEST {
 
         Assert.assertEquals(tableDescriptionList.get(3).getText(), "Mobile", "Mobile text is not displayed right in the table");
         Assert.assertEquals(tableValueList.get(3).getText(), phoneValue, "Mobile is not displayed right in the table");
-
-        driver.quit();
     }
 }
